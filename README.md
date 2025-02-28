@@ -47,3 +47,6 @@ La tabla **Nino** almacena información detallada sobre los niños, como su nomb
 
 ## Propósito
 La base de datos de **DIVERMIND** busca centralizar toda la información relevante sobre los niños con necesidades especiales, facilitando la comunicación entre familias, terapeutas, educadores y otras instituciones para mejorar el seguimiento, la educación y la rehabilitación de los niños.
+
+## colores asociados
+https://paletton.com/#uid=13u0u0kbdWv00++5AZTg1QTkdHY
