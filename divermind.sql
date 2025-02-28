@@ -75,20 +75,24 @@ CREATE TABLE IF NOT EXISTS Imagen (
 -- --------------------------------------------------------
 -- Tabla Usuario (Base para todos los actores del sistema)
 -- --------------------------------------------------------
-
+-- opción común es almacenar el RUT con el guion, ya que es el formato usual (por ejemplo, 12345678-9). Sin embargo, muchos optan por guardar el valor 
+-- “normalizado” (sin puntos ni guion) para facilitar búsquedas y comparaciones, y luego formatearlo al mostrarlo.
 CREATE TABLE IF NOT EXISTS Usuario (
     usuario_id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     rol ENUM('padre', 'educador', 'terapeuta', 'escuela', 'centro_rehabilitacion', 'familia') NOT NULL,
+    rut VARCHAR(12) NOT NULL UNIQUE,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     estado ENUM('activo', 'inactivo') DEFAULT 'activo',
     id_pais INT DEFAULT NULL COMMENT 'Nacionalidad del usuario',
     id_direccion INT DEFAULT NULL COMMENT 'Dirección del usuario',
     FOREIGN KEY (id_pais) REFERENCES Pais(id_pais),
-    FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion)
+    FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion),
+    CHECK (rut REGEXP '^[0-9]{7,8}-[0-9kK]$')
 ) COMMENT 'Usuarios del sistema con roles ampliados y nacionalidad';
+
 
 -- --------------------------------------------------------
 -- Tabla Telefono (Relación solo con Usuario)
@@ -186,7 +190,7 @@ CREATE TABLE IF NOT EXISTS Profesor (
 
 CREATE TABLE IF NOT EXISTS Nino (
     id_nino INT PRIMARY KEY AUTO_INCREMENT,
-    rut VARCHAR(20) NOT NULL UNIQUE,
+    rut VARCHAR(12) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
     lugar_nacimiento VARCHAR(100) DEFAULT NULL,
@@ -198,8 +202,10 @@ CREATE TABLE IF NOT EXISTS Nino (
     FOREIGN KEY (id_familia) REFERENCES Familia(id_familia),
     FOREIGN KEY (id_imagen_perfil) REFERENCES Imagen(id_imagen),
     FOREIGN KEY (id_pais) REFERENCES Pais(id_pais),
-    FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion)
+    FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion),
+    CHECK (rut REGEXP '^[0-9]{7,8}-[0-9kK]$')
 ) COMMENT 'Información consolidada del niño y su familia';
+
 
 -- --------------------------------------------------------
 -- Tablas de Seguimiento del Niño
